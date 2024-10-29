@@ -4,12 +4,12 @@ import {
   Box,
   Collapse,
   ThemeIcon,
-  Text,
   UnstyledButton,
   rem,
 } from "@mantine/core";
 import { IconCalendarStats, IconChevronRight } from "@tabler/icons-react";
 import classes from "./style/NavbarLinksGroup.module.css";
+import { NavLink } from "react-router-dom";
 
 interface LinksGroupProps {
   icon: React.FC<any>;
@@ -27,15 +27,11 @@ export function LinksGroup({
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
-    <Text<"a">
-      component="a"
-      className={classes.link}
-      href={link.link}
-      key={link.label}
-      onClick={(event) => event.preventDefault()}
-    >
-      {link.label}
-    </Text>
+    <>
+      <NavLink to={link.link} className={classes.link}>
+        {link.label}
+      </NavLink>
+    </>
   ));
 
   return (

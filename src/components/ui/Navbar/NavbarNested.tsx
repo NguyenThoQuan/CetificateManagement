@@ -1,51 +1,15 @@
 import { Avatar, Flex, Group, ScrollArea, Text, rem } from "@mantine/core";
-import {
-  IconNotes,
-  IconCalendarStats,
-  IconGauge,
-  IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
-  IconLogout,
-} from "@tabler/icons-react";
+import { IconLogout, IconBuildingCommunity } from "@tabler/icons-react";
 import { LinksGroup } from "./NavbarLinksGroup";
 import logo from "../../../assets/logo-truong-dai-hoc-dai-nam.jpg";
 import classes from "./style/NavbarNested.module.css";
 
 const mockdata = [
-  { label: "Dashboard", icon: IconGauge },
   {
-    label: "Market news",
-    icon: IconNotes,
+    label: "Khoa",
+    icon: IconBuildingCommunity,
     initiallyOpened: true,
-    links: [
-      { label: "Overview", link: "/" },
-      { label: "Forecasts", link: "/" },
-      { label: "Outlook", link: "/" },
-      { label: "Real time", link: "/" },
-    ],
-  },
-  {
-    label: "Releases",
-    icon: IconCalendarStats,
-    links: [
-      { label: "Upcoming releases", link: "/" },
-      { label: "Previous releases", link: "/" },
-      { label: "Releases schedule", link: "/" },
-    ],
-  },
-  { label: "Analytics", icon: IconPresentationAnalytics },
-  { label: "Contracts", icon: IconFileAnalytics },
-  { label: "Settings", icon: IconAdjustments },
-  {
-    label: "Security",
-    icon: IconLock,
-    links: [
-      { label: "Enable 2FA", link: "/" },
-      { label: "Change password", link: "/" },
-      { label: "Recovery codes", link: "/" },
-    ],
+    links: [{ label: "Quản lý khoa", link: "/faculty/faculty-management" }],
   },
 ];
 
@@ -59,6 +23,9 @@ export function NavbarNested() {
       <div className={classes.header}>
         <Group justify="center">
           <img src={logo} style={{ width: rem(50) }} />
+          <Text fw={"bold"} c={"#F27423"} size="18px">
+            Quản lý văn bằng
+          </Text>
         </Group>
       </div>
 

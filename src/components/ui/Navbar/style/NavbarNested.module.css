@@ -24,10 +24,10 @@
     margin-right: calc(var(--mantine-spacing-md) * -1);
   }
   
-  .linksInner {
+  /* .linksInner {
     padding-top: var(--mantine-spacing-xl);
     padding-bottom: var(--mantine-spacing-xl);
-  }
+  } */
   
   .footer {
     display: flex;

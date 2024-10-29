@@ -1,8 +1,18 @@
 import "./App.css";
 import "@mantine/core/styles.css";
-
-import { Button, createTheme, MantineProvider, rem } from "@mantine/core";
+import "@mantine/dates/styles.css";
+import "mantine-react-table/styles.css";
+import {
+  Box,
+  Button,
+  createTheme,
+  Flex,
+  MantineProvider,
+  rem,
+} from "@mantine/core";
 import { NavbarNested } from "./components/ui/Navbar/NavbarNested";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Faculty from "./views/Faculty/Faculty";
 
 const theme = createTheme({
   fontSizes: {
@@ -32,7 +42,18 @@ const theme = createTheme({
 function App() {
   return (
     <MantineProvider theme={theme}>
-      <NavbarNested />
+      <BrowserRouter>
+        <Flex w={"100%"}>
+          <Box w={"100%"}>
+            <NavbarNested />
+          </Box>
+          <Box w={"80%"} p={10}>
+            <Routes>
+              <Route path="/faculty/faculty-management" element={<Faculty />} />
+            </Routes>
+          </Box>
+        </Flex>
+      </BrowserRouter>
     </MantineProvider>
   );
 }

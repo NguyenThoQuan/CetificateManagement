@@ -67,18 +67,6 @@ const Faculty = () => {
         header: "Ghi chú",
       },
       {
-        accessorKey: "description",
-        header: "Ghi chú",
-      },
-      {
-        accessorKey: "description",
-        header: "Ghi chú",
-      },
-      {
-        accessorKey: "description",
-        header: "Ghi chú",
-      },
-      {
         accessorKey: "action",
         header: "Thao tác",
         size: 50,
@@ -103,7 +91,7 @@ const Faculty = () => {
 
     const fetchFacultyList = async () => {
       try {
-        const url = "/api/Faculty/get-list?PageIndex=0&PageSize=1";
+        const url = "/api/Faculty/get-list?PageIndex=0&PageSize=50";
         const repo = new RepositoryBase<ResponseBase<FacultyModelQuery>>(
           "http://localhost:5268"
         );

@@ -9,7 +9,10 @@ const mockdata = [
     label: "Khoa",
     icon: IconBuildingCommunity,
     initiallyOpened: true,
-    links: [{ label: "Quản lý khoa", link: "/faculty/faculty-management" }],
+    links: [
+      { label: "Danh sách khoa", link: "/faculty/faculty-management" },
+      { label: "Danh sách chuyên ngành", link: "/faculty/major-management" },
+    ],
   },
 ];
 

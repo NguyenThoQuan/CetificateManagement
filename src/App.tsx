@@ -13,9 +13,7 @@ import {
 import { NavbarNested } from "./components/ui/Navbar/NavbarNested";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Faculty from "./views/Faculty/Faculty";
-import { RepositoryBase } from "./service/RepositoryBase";
-import { FacultyModelQuery } from "./model/Faculty";
-import { ResponseBase } from "./model/ReponseBase";
+import Major from "./views/Major/Major";
 
 const theme = createTheme({
   fontSizes: {
@@ -53,6 +51,7 @@ function App() {
           <Box w={"80%"} p={10}>
             <Routes>
               <Route path="/faculty/faculty-management" element={<Faculty />} />
+              <Route path="/faculty/major-management" element={<Major />} />
             </Routes>
           </Box>
         </Flex>

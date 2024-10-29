@@ -13,6 +13,9 @@ import {
 import { NavbarNested } from "./components/ui/Navbar/NavbarNested";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Faculty from "./views/Faculty/Faculty";
+import { RepositoryBase } from "./service/RepositoryBase";
+import { FacultyModelQuery } from "./model/Faculty";
+import { ResponseBase } from "./model/ReponseBase";
 
 const theme = createTheme({
   fontSizes: {
@@ -38,6 +41,21 @@ const theme = createTheme({
     }),
   },
 });
+
+// const fetchFacultyList = async () => {
+//   try {
+//     const url = "/api/Faculty/get-list?PageIndex=0&PageSize=1";
+//     const repo = new RepositoryBase<ResponseBase<FacultyModelQuery>>(
+//       "https://localhost:7190"
+//     );
+//     const facultyList = await repo.get(url);
+//     console.log(facultyList);
+//   } catch (error) {
+//     console.error("Error fetching faculty list:", error);
+//   }
+// };
+
+// fetchFacultyList();
 
 function App() {
   return (

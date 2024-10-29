@@ -1,4 +1,4 @@
-export interface InterfaceFaculty {
+export interface FacultyModelQuery {
   name: string | null;
   code: string | null;
   active: boolean;

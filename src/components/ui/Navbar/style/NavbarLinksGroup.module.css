@@ -13,11 +13,12 @@
   }
   
   .link {
+    text-align: left;
     font-weight: 500;
     display: block;
     text-decoration: none;
     padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
-    padding-left: var(--mantine-spacing-md);
+    padding-left: var(--mantine-spacing-lg);
     margin-left: var(--mantine-spacing-xl);
     font-size: var(--mantine-font-size-sm);
     color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
@@ -32,3 +33,7 @@
   .chevron {
     transition: transform 200ms ease;
   }
+
+button:focus, button:focus-visible{
+  outline: none;
+}

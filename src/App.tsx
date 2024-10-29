@@ -2,7 +2,7 @@ import "./App.css";
 import "@mantine/core/styles.css";
 
 import { Button, createTheme, MantineProvider, rem } from "@mantine/core";
-import { NavbarNested } from "./views/Navbar/NavbarNested";
+import { NavbarNested } from "./components/ui/Navbar/NavbarNested";
 
 const theme = createTheme({
   fontSizes: {

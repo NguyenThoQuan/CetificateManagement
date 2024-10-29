@@ -43,10 +43,13 @@ export function LinksGroup({
       <UnstyledButton
         onClick={() => setOpened((o) => !o)}
         className={classes.control}
+        style={{
+          border: "none",
+        }}
       >
         <Group justify="space-between" gap={0}>
           <Box style={{ display: "flex", alignItems: "center" }}>
-            <ThemeIcon variant="light" size={30}>
+            <ThemeIcon variant="light" size={30} color="#F27423">
               <Icon style={{ width: rem(18), height: rem(18) }} />
             </ThemeIcon>
             <Box ml="md">{label}</Box>

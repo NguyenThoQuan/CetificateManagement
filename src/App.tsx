@@ -42,27 +42,12 @@ const theme = createTheme({
   },
 });
 
-// const fetchFacultyList = async () => {
-//   try {
-//     const url = "/api/Faculty/get-list?PageIndex=0&PageSize=1";
-//     const repo = new RepositoryBase<ResponseBase<FacultyModelQuery>>(
-//       "https://localhost:7190"
-//     );
-//     const facultyList = await repo.get(url);
-//     console.log(facultyList);
-//   } catch (error) {
-//     console.error("Error fetching faculty list:", error);
-//   }
-// };
-
-// fetchFacultyList();
-
 function App() {
   return (
     <MantineProvider theme={theme}>
       <BrowserRouter>
         <Flex w={"100%"}>
-          <Box w={"100%"}>
+          <Box w={"20%"}>
             <NavbarNested />
           </Box>
           <Box w={"80%"} p={10}>

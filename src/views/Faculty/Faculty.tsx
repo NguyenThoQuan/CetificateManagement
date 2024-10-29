@@ -35,6 +35,14 @@ const Faculty = () => {
         header: "Tên khoa",
       },
       {
+        accessorKey: "code",
+        header: "Mã khoa",
+      },
+      {
+        accessorKey: "description",
+        header: "Ghi chú",
+      },
+      {
         accessorKey: "action",
         header: "Thao tác",
         size: 50,

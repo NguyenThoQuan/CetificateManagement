@@ -1,5 +1,5 @@
 export interface ResponseBase<T> {
-  success?: boolean;
+  isSuccess?: boolean;
   message?: string;
   data?: T;
   error?: object;

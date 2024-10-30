@@ -13,7 +13,7 @@ import {
   useMantineReactTable,
 } from "mantine-react-table";
 import React, { useEffect, useState } from "react";
-import { paginationBase } from "../../base/BaseTable";
+import { paginationBase } from "../../../base/BaseTable";
 import {
   IconEdit,
   IconEye,
@@ -21,15 +21,18 @@ import {
   IconSearch,
   IconTrash,
 } from "@tabler/icons-react";
-import { RepositoryBase } from "../../service/RepositoryBase";
-import { FacultyModelQuery } from "../../model/Faculty";
-import { ResponseBase } from "../../model/ReponseBase";
-import { MajorModelQuery } from "../../model/Major";
+import { RepositoryBase } from "../../../service/RepositoryBase";
+import { ResponseBase } from "../../../model/ReponseBase";
+import { useHotkeys } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
+import CreateDataView from "./CreateDataView";
+import { DegreeTypeModelQuery } from "../../../model/DegreeType";
 
-const Major = () => {
+const DegreeType = () => {
   //data and fetching state
   const headerRef = React.useRef<HTMLDivElement>(null);
-  const [data, setData] = useState<MajorModelQuery[]>([]);
+  const [data, setData] = useState<DegreeTypeModelQuery[]>([]);
+  console.log(data);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefetching, setIsRefetching] = useState(false);
@@ -41,17 +44,17 @@ const Major = () => {
   const [selectIds, setSelectIds] = useState<string[]>([]);
   const [deleteViewStatus, setDeleteViewStatus] = useState(false);
 
-  const columns = React.useMemo<MRT_ColumnDef<MajorModelQuery>[]>(
+  const columns = React.useMemo<MRT_ColumnDef<any>[]>(
     () => [
       {
         accessorKey: "name",
-        header: "Tên chuyên ngành",
+        header: "Tên loại văn bằng",
         enableColumnActions: false,
         enableColumnFilter: false,
       },
       {
         accessorKey: "code",
-        header: "Mã chuyên ngành",
+        header: "Mã loại văn bằng",
         Cell: ({ renderedCellValue }) => (
           <Badge
             radius="sm"
@@ -66,8 +69,22 @@ const Major = () => {
         enableColumnFilter: false,
       },
       {
-        accessorKey: "facultyId",
-        header: "Khoa",
+        accessorKey: "duration",
+        header: "Thời gian học",
+        enableColumnActions: false,
+        enableColumnFilter: false,
+      },
+      {
+        accessorKey: "level",
+        header: "Cấp bậc",
+        Cell: ({ row }) => (
+          <Badge
+            color={row.original.level === 0 ? "#09b8ff" : "#fc8c0c"}
+            radius={"sm"}
+          >
+            {row.original.level === 0 ? "Đại học" : "Sau đại học"}
+          </Badge>
+        ),
         enableColumnActions: false,
         enableColumnFilter: false,
       },
@@ -135,15 +152,15 @@ const Major = () => {
     //   pagination.pageSize
     // }`;
 
-    const fetchMajorList = async () => {
+    const fetchDataGetList = async () => {
       try {
-        const url = "/api/Major/get-list?PageIndex=0&PageSize=50";
+        const url = "/api/DegreeType/get-list?PageIndex=0&PageSize=50";
         const repo = new RepositoryBase<ResponseBase<any>>(
           "https://localhost:7190"
         );
-        const majorList = await repo.get(url);
-        if (majorList && majorList.isSuccess) {
-          const result = majorList?.data;
+        const dataApi = await repo.get(url);
+        if (dataApi && dataApi.isSuccess) {
+          const result = dataApi?.data;
           setData(result?.data ? result?.data : []);
           setRowCount(result.count);
           setSelectIds([]);
@@ -156,8 +173,28 @@ const Major = () => {
       }
     };
 
-    fetchMajorList();
+    fetchDataGetList();
   };
+
+  const handleCreate = () => {
+    // setDeleteViewStatus(!deleteViewStatus);
+    modals.openConfirmModal({
+      title: "Tạo mới khoa",
+      size: "auto",
+      children: <CreateDataView />,
+      confirmProps: { display: "none" },
+      cancelProps: { display: "none" },
+    });
+  };
+
+  useHotkeys([
+    [
+      "F11",
+      () => {
+        handleCreate();
+      },
+    ],
+  ]);
 
   useEffect(() => {
     fetchData();
@@ -180,8 +217,8 @@ const Major = () => {
   }, []);
 
   const table = useMantineReactTable({
-    columns,
-    data,
+    columns: columns,
+    data: data,
     positionToolbarAlertBanner: "bottom",
     renderTopToolbarCustomActions: () => (
       <Flex justify={"space-between"} w={"100%"}>
@@ -190,7 +227,12 @@ const Major = () => {
           <Button leftSection={<IconSearch size={"15px"} />}>Tìm kiếm</Button>
         </Flex>
         <Flex gap="md">
-          <Button leftSection={<IconPlus size={"15px"} />}>Thêm mới</Button>
+          <Button
+            leftSection={<IconPlus size={"15px"} />}
+            onClick={() => handleCreate()}
+          >
+            Thêm mới
+          </Button>
         </Flex>
       </Flex>
     ),
@@ -256,11 +298,7 @@ const Major = () => {
     }),
   });
 
-  return (
-    <>
-      <MantineReactTable table={table} />
-    </>
-  );
+  return <MantineReactTable table={table} />;
 };
 
-export default Major;
+export default DegreeType;

@@ -1,10 +1,21 @@
 import { Avatar, Flex, Group, ScrollArea, Text, rem } from "@mantine/core";
-import { IconLogout, IconBuildingCommunity } from "@tabler/icons-react";
+import {
+  IconLogout,
+  IconBuildingCommunity,
+  IconHome,
+  IconCertificate,
+  IconSchool,
+} from "@tabler/icons-react";
 import { LinksGroup } from "./NavbarLinksGroup";
 import logo from "../../../assets/logo-truong-dai-hoc-dai-nam.jpg";
 import classes from "./style/NavbarNested.module.css";
 
 const mockdata = [
+  {
+    label: "Trang chủ",
+    icon: IconHome,
+    initiallyOpened: true,
+  },
   {
     label: "Khoa",
     icon: IconBuildingCommunity,
@@ -13,6 +24,20 @@ const mockdata = [
       { label: "Danh sách khoa", link: "/faculty/faculty-management" },
       { label: "Danh sách chuyên ngành", link: "/faculty/major-management" },
     ],
+  },
+  {
+    label: "Sinh viên",
+    icon: IconSchool,
+    initiallyOpened: true,
+    links: [
+      { label: "Sinh viên tốt nghiệp", link: "/student/student-graduated" },
+    ],
+  },
+  {
+    label: "Văn bằng",
+    icon: IconCertificate,
+    initiallyOpened: true,
+    links: [{ label: "Loại văn bằng", link: "/degree/degree-type" }],
   },
 ];
 

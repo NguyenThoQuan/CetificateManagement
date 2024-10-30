@@ -1,4 +1,12 @@
-import { Box, TextInput, Flex, Button, Badge } from "@mantine/core";
+import {
+  TextInput,
+  Flex,
+  Button,
+  Badge,
+  Title,
+  Tooltip,
+  ActionIcon,
+} from "@mantine/core";
 import {
   MRT_ColumnDef,
   MRT_RowSelectionState,
@@ -7,15 +15,25 @@ import {
 } from "mantine-react-table";
 import React, { useEffect, useState } from "react";
 import { paginationBase } from "../../base/BaseTable";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconEye,
+  IconPlus,
+  IconSearch,
+  IconTrash,
+} from "@tabler/icons-react";
 import { RepositoryBase } from "../../service/RepositoryBase";
 import { FacultyModelQuery } from "../../model/Faculty";
 import { ResponseBase } from "../../model/ReponseBase";
+import { useHotkeys } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
+import CreateDataView from "./CreateDataView";
 
 const Faculty = () => {
   //data and fetching state
   const headerRef = React.useRef<HTMLDivElement>(null);
   const [data, setData] = useState<FacultyModelQuery[]>([]);
+  console.log(data);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefetching, setIsRefetching] = useState(false);
@@ -26,15 +44,14 @@ const Faculty = () => {
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
   const [selectIds, setSelectIds] = useState<string[]>([]);
   const [deleteViewStatus, setDeleteViewStatus] = useState(false);
-  //count
-  const [timeLeft, setTimeLeft] = useState(60);
-  const [isCounting, setIsCounting] = useState(false);
 
-  const columns = React.useMemo<MRT_ColumnDef<FacultyModelQuery>[]>(
+  const columns = React.useMemo<MRT_ColumnDef<any>[]>(
     () => [
       {
         accessorKey: "name",
         header: "Tên khoa",
+        enableColumnActions: false,
+        enableColumnFilter: false,
       },
       {
         accessorKey: "code",
@@ -49,6 +66,8 @@ const Faculty = () => {
             {renderedCellValue === null ? null : renderedCellValue}
           </Badge>
         ),
+        enableColumnActions: false,
+        enableColumnFilter: false,
       },
       {
         accessorKey: "active",
@@ -61,15 +80,40 @@ const Faculty = () => {
             {row.original.active === true ? "Đang hoạt động" : "Dừng hoạt động"}
           </Badge>
         ),
+        enableColumnActions: false,
+        enableColumnFilter: false,
       },
       {
         accessorKey: "description",
         header: "Ghi chú",
+        enableColumnActions: false,
+        enableColumnFilter: false,
       },
       {
         accessorKey: "action",
         header: "Thao tác",
-        size: 50,
+        size: 10,
+        Cell: () => (
+          <Flex gap={"md"} align={"center"}>
+            <Tooltip label="Chỉnh sửa">
+              <ActionIcon variant="light" color="orange">
+                <IconEdit size={20} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+
+            <Tooltip label="Chi tiết">
+              <ActionIcon variant="light" color="cyan">
+                <IconEye size={20} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+
+            <Tooltip label="Xóa">
+              <ActionIcon variant="light" color="red">
+                <IconTrash size={20} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+          </Flex>
+        ),
         enableSorting: false,
         enableColumnActions: false,
         enableColumnFilter: false,
@@ -92,11 +136,19 @@ const Faculty = () => {
     const fetchFacultyList = async () => {
       try {
         const url = "/api/Faculty/get-list?PageIndex=0&PageSize=50";
-        const repo = new RepositoryBase<ResponseBase<FacultyModelQuery>>(
-          "http://localhost:5268"
+        const repo = new RepositoryBase<ResponseBase<any>>(
+          "https://localhost:7190"
         );
         const facultyList = await repo.get(url);
-        console.log(facultyList);
+        if (facultyList && facultyList.isSuccess) {
+          const result = facultyList?.data;
+          setData(result?.data ? result?.data : []);
+          setRowCount(result.count);
+          setSelectIds([]);
+          table.resetRowSelection();
+          setIsLoading(false);
+          setIsRefetching(false);
+        }
       } catch (error) {
         console.error("Error fetching faculty list:", error);
       }
@@ -104,6 +156,26 @@ const Faculty = () => {
 
     fetchFacultyList();
   };
+
+  const handleCreate = () => {
+    // setDeleteViewStatus(!deleteViewStatus);
+    modals.openConfirmModal({
+      title: "Tạo mới khoa",
+      size: "auto",
+      children: <CreateDataView />,
+      confirmProps: { display: "none" },
+      cancelProps: { display: "none" },
+    });
+  };
+
+  useHotkeys([
+    [
+      "F11",
+      () => {
+        handleCreate();
+      },
+    ],
+  ]);
 
   useEffect(() => {
     fetchData();
@@ -126,21 +198,26 @@ const Faculty = () => {
   }, []);
 
   const table = useMantineReactTable({
-    columns,
-    data,
+    columns: columns,
+    data: data,
     positionToolbarAlertBanner: "bottom",
-    renderTopToolbarCustomActions: ({ table }) => (
+    renderTopToolbarCustomActions: () => (
       <Flex justify={"space-between"} w={"100%"}>
         <Flex gap="md">
           <TextInput placeholder="Nhập từ khóa" />
           <Button leftSection={<IconSearch size={"15px"} />}>Tìm kiếm</Button>
         </Flex>
         <Flex gap="md">
-          <Button leftSection={<IconPlus size={"15px"} />}>Thêm mới</Button>
+          <Button
+            leftSection={<IconPlus size={"15px"} />}
+            onClick={() => handleCreate()}
+          >
+            Thêm mới
+          </Button>
         </Flex>
       </Flex>
     ),
-    renderToolbarInternalActions: ({ table }) => <></>,
+    renderToolbarInternalActions: () => <></>,
     mantineTopToolbarProps: {
       style: {
         borderBottom: "3px solid rgba(128, 128, 128, 0.5)",
@@ -167,7 +244,7 @@ const Faculty = () => {
     manualSorting: false,
     rowCount,
     onPaginationChange: setPagination,
-    mantineTableBodyCellProps: ({ row }) => ({
+    mantineTableBodyCellProps: () => ({
       style: {
         fontWeight: "500",
         fontSize: "12.5px",
@@ -202,11 +279,7 @@ const Faculty = () => {
     }),
   });
 
-  return (
-    <>
-      <MantineReactTable table={table} />
-    </>
-  );
+  return <MantineReactTable table={table} />;
 };
 
 export default Faculty;
